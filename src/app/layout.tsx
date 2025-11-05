@@ -1,25 +1,23 @@
 import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Highway Cab - Your Trusted Ride Between Cities",
-  description: "Highway Cab is an Indian intercity travel startup that connects passengers with verified cab vendors and drivers for safe and reliable intercity travel.",
-};
-import { Geist, Geist_Mono } from "next/font/google";
+import { Poppins, Inter } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
-
-
-import { ThemeProvider } from "@/components/ThemeProvider";
+export const metadata: Metadata = {
+  title: "HighwayCab - Intercity Travel Made Easy",
+  description: "Book reliable intercity cabs with HighwayCab. Safe, comfortable, and affordable travel across cities.",
+};
 
 export default function RootLayout({
   children,
@@ -27,17 +25,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${poppins.variable} ${inter.variable} antialiased font-inter`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-        >
-          {children}
-        </ThemeProvider>
+        {children}
       </body>
     </html>
   );

@@ -25,21 +25,21 @@ const features = [
 
 export default function WhyTravelWithUs() {
   return (
-    <section className="py-16 lg:py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-16 lg:py-24 bg-light-gray">
+      <div className="px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 lg:mb-16">
           <h2 className="text-3xl lg:text-4xl font-poppins font-bold text-navy-blue mb-4">
             Why Travel With Us
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            We provide reliable, comfortable, and affordable intercity cab services with a focus on customer satisfaction.
+            Experience the best intercity cab service with our commitment to quality and customer satisfaction.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => (
-            <div key={index} className="text-center p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 bg-light-gray">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-golden-yellow rounded-full mb-4">
+            <div key={index} className="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-xl transition-shadow">
+              <div className="bg-golden-yellow rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
                 <feature.icon className="w-8 h-8 text-navy-blue" />
               </div>
               <h3 className="text-xl font-poppins font-semibold text-navy-blue mb-3">

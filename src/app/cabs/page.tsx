@@ -12,7 +12,7 @@ const cabData = [
   {
     type: "Hatchback",
     name: "Maruti Swift",
-    image: "/api/placeholder/400/300",
+    image: "https://via.placeholder.com/400x300.png/F2B203/000000?text=Sedan",
     capacity: 4,
     luggage: 2,
     features: ["AC", "WiFi"],
@@ -71,7 +71,7 @@ export default function CabListingPage() {
       
       {/* Page Header */}
       <section className="bg-gradient-to-br from-navy-blue to-blue-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl lg:text-4xl font-poppins font-bold mb-4">
             Available Cabs
           </h1>
@@ -83,7 +83,7 @@ export default function CabListingPage() {
 
       {/* Main Content */}
       <section className="py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-4 sm:px-6 lg:px-8">
           {/* Edit Ride Section */}
           <EditRideForm initialData={rideDetails} onUpdate={handleRideUpdate} />
 

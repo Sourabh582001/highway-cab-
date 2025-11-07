@@ -29,47 +29,39 @@ const reviews = [
 
 export default function CustomerReviews() {
   return (
-    <section className="py-16 lg:py-24 bg-light-gray">
+    <section className="py-16 lg:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 lg:mb-16">
           <h2 className="text-3xl lg:text-4xl font-poppins font-bold text-navy-blue mb-4">
             What Our Customers Say
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Don't just take our word for it. Here's what our satisfied customers have to say about their experience.
+            Read reviews from thousands of satisfied customers who trust HighwayCab for their intercity travel.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {reviews.map((review, index) => (
-            <div key={index} className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 relative">
-              <div className="absolute top-4 left-4 text-golden-yellow opacity-20">
-                <FaQuoteLeft className="w-8 h-8" />
+            <div key={index} className="bg-light-gray rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+              <div className="flex items-center mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <FaStar
+                    key={i}
+                    className={`w-4 h-4 ${
+                      i < review.rating ? 'text-golden-yellow' : 'text-gray-300'
+                    }`}
+                  />
+                ))}
               </div>
-              
-              <div className="mb-4">
-                <div className="flex items-center mb-2">
-                  {[...Array(5)].map((_, i) => (
-                    <FaStar
-                      key={i}
-                      className={`w-4 h-4 ${
-                        i < review.rating ? 'text-golden-yellow' : 'text-gray-300'
-                      }`}
-                    />
-                  ))}
-                </div>
+              <blockquote className="mb-6">
+                <FaQuoteLeft className="text-golden-yellow w-6 h-6 mb-3" />
                 <p className="text-gray-700 leading-relaxed italic">
-                  "{review.comment}"
+                  {review.comment}
                 </p>
-              </div>
-
-              <div className="border-t pt-4">
-                <h4 className="font-poppins font-semibold text-navy-blue">
-                  {review.name}
-                </h4>
-                <p className="text-sm text-gray-500">
-                  {review.location}
-                </p>
+              </blockquote>
+              <div className="border-t border-gray-200 pt-4">
+                <p className="font-poppins font-semibold text-navy-blue">{review.name}</p>
+                <p className="text-gray-600 text-sm">{review.location}</p>
               </div>
             </div>
           ))}

@@ -1,15 +1,9 @@
 import type { Metadata } from "next";
-import { Poppins, Inter } from "next/font/google";
+import { Work_Sans } from "next/font/google";
 import "./globals.css";
 
-const poppins = Poppins({
-  variable: "--font-poppins",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-});
-
-const inter = Inter({
-  variable: "--font-inter",
+const workSans = Work_Sans({
+  variable: "--font-work-sans",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
 });
@@ -27,9 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${poppins.variable} ${inter.variable} antialiased font-inter`}
+        className={`${workSans.variable} antialiased font-sans bg-white text-navy-blue`}
       >
-        {children}
+        <div>
+          {children}
+        </div>
       </body>
     </html>
   );

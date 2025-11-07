@@ -1,11 +1,6 @@
 @import "tailwindcss";
 
-:root {
-  --navy-blue: #0B1E3D;
-  --golden-yellow: #FFC300;
-  --white: #FFFFFF;
-  --light-gray: #F7F8FA;
-}
+
 
 @theme inline {
   /* Colors */
@@ -39,17 +34,17 @@
 
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  /* margin: 0; */
+  /* padding: 0; */
 }
 
 body {
-  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
-  background-color: var(--white);
-  color: var(--navy-blue);
+  /* Font family comes from Tailwind class `font-sans` on <body> */
   line-height: 1.6;
 }
 
-.font-poppins {
-  font-family: var(--font-poppins), system-ui, -apple-system, sans-serif;
+/* Alias previous font utility classes to Work Sans to keep components working */
+.font-poppins,
+.font-inter {
+  font-family: var(--font-work-sans), system-ui, -apple-system, sans-serif;
 }

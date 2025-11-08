@@ -43,7 +43,7 @@ export default function Home() {
             </div>
 
             {/* Right Side - Booking Form */}
-            <div className="bg-white rounded-xl shadow-2xl p-8">
+            <div className="flex justify-center">
               <BookingForm />
             </div>
           </div>

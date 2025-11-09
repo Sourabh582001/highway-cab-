@@ -71,7 +71,7 @@ export default function CabListingPage() {
       
       {/* Page Header */}
       <section className="bg-gradient-to-br from-navy-blue to-blue-900 text-white py-16">
-        <div className="px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1200px] mx-auto">
           <h1 className="text-3xl lg:text-4xl font-poppins font-bold mb-4">
             Available Cabs
           </h1>
@@ -83,7 +83,7 @@ export default function CabListingPage() {
 
       {/* Main Content */}
       <section className="py-8">
-        <div className="px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1200px] mx-auto">
           {/* Edit Ride Section */}
           <EditRideForm initialData={rideDetails} onUpdate={handleRideUpdate} />
 

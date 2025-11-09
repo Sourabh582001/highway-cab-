@@ -23,10 +23,10 @@ export default function Home() {
                 Book reliable cabs for your intercity journeys. Professional drivers, comfortable rides, and transparent pricing.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mb-1">
-                <button className="bg-golden-yellow text-navy-blue font-poppins font-semibold px-8 py-3 rounded-lg hover:bg-yellow-400 transition-colors">
+                <button className="cursor-pointer bg-golden-yellow text-navy-blue font-poppins font-semibold px-8 py-3 rounded-lg hover:bg-yellow-400 transition-colors">
                   Book Now
                 </button>
-                <button className="border-2 border-golden-yellow text-golden-yellow font-poppins font-semibold px-8 py-3 rounded-lg hover:bg-golden-yellow hover:text-navy-blue transition-colors">
+                <button className="cursor-pointer border-2 border-golden-yellow text-golden-yellow font-poppins font-semibold px-8 py-3 rounded-lg hover:bg-golden-yellow hover:text-navy-blue transition-colors">
                   Learn More
                 </button>
               </div>

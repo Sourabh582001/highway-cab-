@@ -1,5 +1,6 @@
+"use client";
 import Image from "next/image";
-import { FaUsers, FaSuitcase, FaSnowflake, FaWifi } from "react-icons/fa";
+import { FaUsers, FaSnowflake, FaWifi } from "react-icons/fa";
 
 interface CabCardProps {
   type: string;
@@ -10,9 +11,30 @@ interface CabCardProps {
   features: string[];
   price: number;
   originalPrice?: number;
+  includedKm?: number;
+  extraFarePerKm?: number;
+  fuelChargesIncluded?: boolean;
+  driverChargesIncluded?: boolean;
+  nightChargesIncluded?: boolean;
+  terms?: string[];
 }
 
-export default function CabCard({ type, name, image, capacity, luggage, features, price, originalPrice }: CabCardProps) {
+export default function CabCard({
+  type,
+  name,
+  image,
+  capacity,
+  luggage,
+  features,
+  price,
+  originalPrice,
+  includedKm = 400,
+  extraFarePerKm = 9.5,
+  fuelChargesIncluded = true,
+  driverChargesIncluded = true,
+  nightChargesIncluded = true,
+  terms,
+}: CabCardProps) {
   const getIcon = (feature: string) => {
     switch (feature.toLowerCase()) {
       case 'ac':
@@ -23,8 +45,11 @@ export default function CabCard({ type, name, image, capacity, luggage, features
         return null;
     }
   };
+  // Hide WiFi chip per request
+  const displayedFeatures = features.filter((f) => f.toLowerCase() !== "wifi");
 
   return (
+    <>
     <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
       {/* Car Image */}
       <div className="relative h-48 bg-gray-100">
@@ -51,38 +76,68 @@ export default function CabCard({ type, name, image, capacity, luggage, features
             <FaUsers className="w-4 h-4" />
             <span>{capacity} Seats</span>
           </div>
-          <div className="flex items-center space-x-1">
-            <FaSuitcase className="w-4 h-4" />
-            <span>{luggage} Bags</span>
-          </div>
         </div>
 
         {/* Features */}
         <div className="flex flex-wrap gap-2 mb-4">
-          {features.map((feature, index) => (
+          {displayedFeatures.map((feature, index) => (
             <div key={index} className="flex items-center space-x-1 bg-light-gray text-gray-700 px-3 py-1 rounded-full text-sm">
               {getIcon(feature)}
               <span>{feature}</span>
             </div>
           ))}
+      </div>
+
+      {/* Pricing */}
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <div className="flex items-center space-x-2">
+            <span className="text-2xl font-bold text-navy-blue">₹{price}</span>
+            {originalPrice && (
+              <span className="text-sm text-gray-500 line-through">₹{originalPrice}</span>
+            )}
+          </div>
+          {/* per km text removed as requested */}
+        </div>
+        <div className="text-right">
+          <p className="text-sm text-gray-600">Starting from</p>
+          <p className="text-lg font-semibold text-navy-blue">₹{price * 50}</p>
+        </div>
+      </div>
+
+      {/* Detailed Charges */}
+      <div className="border-t border-gray-200 pt-4 mt-2 space-y-2">
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-gray-600">Included Km</span>
+          <span className="font-semibold text-green-600">{includedKm} Km</span>
+        </div>
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-gray-600">Extra fare/Km</span>
+          <span className="font-semibold text-green-600">₹ {extraFarePerKm}/Km</span>
+        </div>
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-gray-600">Fuel Charges</span>
+          <span className={fuelChargesIncluded ? "font-semibold text-green-600" : "font-semibold text-red-600"}>
+            {fuelChargesIncluded ? "Included" : "Excluded"}
+          </span>
+        </div>
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-gray-600">Driver Charges</span>
+          <span className={driverChargesIncluded ? "font-semibold text-green-600" : "font-semibold text-red-600"}>
+            {driverChargesIncluded ? "Included" : "Excluded"}
+          </span>
+        </div>
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-gray-600">Night Charges</span>
+          <span className={nightChargesIncluded ? "font-semibold text-green-600" : "font-semibold text-red-600"}>
+            {nightChargesIncluded ? "Included" : "Excluded"}
+          </span>
         </div>
 
-        {/* Pricing */}
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <div className="flex items-center space-x-2">
-              <span className="text-2xl font-bold text-navy-blue">₹{price}</span>
-              {originalPrice && (
-                <span className="text-sm text-gray-500 line-through">₹{originalPrice}</span>
-              )}
-            </div>
-            <p className="text-sm text-gray-600">per km</p>
-          </div>
-          <div className="text-right">
-            <p className="text-sm text-gray-600">Starting from</p>
-            <p className="text-lg font-semibold text-navy-blue">₹{price * 50}</p>
-          </div>
+        <div className="text-center pt-2">
+          <span className="text-navy-blue underline font-medium">Other Terms</span>
         </div>
+      </div>
 
         {/* Book Button */}
         <button className="w-full bg-golden-yellow text-navy-blue font-poppins font-semibold py-3 px-6 rounded-lg hover:bg-yellow-400 transition-colors duration-200">
@@ -90,5 +145,8 @@ export default function CabCard({ type, name, image, capacity, luggage, features
         </button>
       </div>
     </div>
+
+    {/* Other Terms modal intentionally removed to disable popup */}
+  </>
   );
 }

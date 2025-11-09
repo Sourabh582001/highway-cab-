@@ -17,7 +17,12 @@ const cabData = [
     luggage: 2,
     features: ["AC", "WiFi"],
     price: 12,
-    originalPrice: 15
+    originalPrice: 15,
+    includedKm: 400,
+    extraFarePerKm: 9.0,
+    fuelChargesIncluded: true,
+    driverChargesIncluded: true,
+    nightChargesIncluded: true
   },
   {
     type: "Sedan",
@@ -27,7 +32,12 @@ const cabData = [
     luggage: 3,
     features: ["AC", "WiFi"],
     price: 16,
-    originalPrice: 20
+    originalPrice: 20,
+    includedKm: 442,
+    extraFarePerKm: 9.5,
+    fuelChargesIncluded: true,
+    driverChargesIncluded: true,
+    nightChargesIncluded: true
   },
   {
     type: "SUV",
@@ -37,7 +47,12 @@ const cabData = [
     luggage: 4,
     features: ["AC", "WiFi"],
     price: 22,
-    originalPrice: 25
+    originalPrice: 25,
+    includedKm: 500,
+    extraFarePerKm: 12.0,
+    fuelChargesIncluded: true,
+    driverChargesIncluded: true,
+    nightChargesIncluded: true
   },
   {
     type: "Tempo Traveller",
@@ -47,7 +62,12 @@ const cabData = [
     luggage: 6,
     features: ["AC", "WiFi"],
     price: 28,
-    originalPrice: 32
+    originalPrice: 32,
+    includedKm: 600,
+    extraFarePerKm: 16.0,
+    fuelChargesIncluded: true,
+    driverChargesIncluded: true,
+    nightChargesIncluded: true
   }
 ];
 
@@ -100,6 +120,11 @@ export default function CabListingPage() {
                 features={cab.features}
                 price={cab.price}
                 originalPrice={cab.originalPrice}
+                includedKm={cab.includedKm}
+                extraFarePerKm={cab.extraFarePerKm}
+                fuelChargesIncluded={cab.fuelChargesIncluded}
+                driverChargesIncluded={cab.driverChargesIncluded}
+                nightChargesIncluded={cab.nightChargesIncluded}
               />
             ))}
           </div>

@@ -80,10 +80,54 @@ export default function CabListingPage() {
     pickupTime: searchParams.get('time') || '',
     carType: searchParams.get('carType') || 'hatchback'
   });
+  const [routeDistance, setRouteDistance] = useState<number | null>(null);
+  // Multi-stop and trip type from URL
+  const stopsParam = searchParams.get('stops') || '';
+  const tripParam = (searchParams.get('trip') || 'oneway').toLowerCase();
 
   const handleRideUpdate = (updatedData: any) => {
     setRideDetails(updatedData);
   };
+
+  // Fetch distance: use POST for multi-stop/round-trip, fallback to GET for simple two-city
+  useEffect(() => {
+    if (!rideDetails.pickup || !rideDetails.destination) return;
+    const from = rideDetails.pickup.trim();
+    const to = rideDetails.destination.trim();
+    if (!from || !to || from.toLowerCase() === to.toLowerCase()) return;
+
+    const stops = stopsParam
+      ? stopsParam.split('|').map((s) => s.trim()).filter(Boolean)
+      : [];
+
+    // Use multi-stop POST when there are stops or trip is round
+    if (stops.length > 0 || tripParam === 'round') {
+      const cities = [from, ...stops, to];
+      fetch('/api/distance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cities, tripType: tripParam }),
+      })
+        .then((r) => (r.ok ? r.json() : Promise.reject(r)))
+        .then((data) => {
+          setRouteDistance(typeof data.totalKm === 'number' ? data.totalKm : null);
+        })
+        .catch(() => {
+          setRouteDistance(null);
+        });
+      return;
+    }
+
+    // Fallback: simple two-city GET
+    fetch(`/api/distance?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`)
+      .then((r) => (r.ok ? r.json() : Promise.reject(r)))
+      .then((data) => {
+        setRouteDistance(typeof data.distanceKm === 'number' ? data.distanceKm : null);
+      })
+      .catch(() => {
+        setRouteDistance(null);
+      });
+  }, [rideDetails.pickup, rideDetails.destination, stopsParam, tripParam]);
 
   return (
     <div className="min-h-screen bg-light-gray">
@@ -124,8 +168,9 @@ export default function CabListingPage() {
                 extraFarePerKm={cab.extraFarePerKm}
                 fuelChargesIncluded={cab.fuelChargesIncluded}
                 driverChargesIncluded={cab.driverChargesIncluded}
-                nightChargesIncluded={cab.nightChargesIncluded}
-              />
+              nightChargesIncluded={cab.nightChargesIncluded}
+              routeDistanceKm={routeDistance ?? undefined}
+            />
             ))}
           </div>
         </div>

@@ -32,8 +32,8 @@ function useCityAutocomplete(query: string) {
         const url = `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?namePrefix=${encodeURIComponent(q)}&sort=-population`;
         const res = await fetch(url, {
           headers: {
-            // TODO: Insert your RapidAPI key below
-            "X-RapidAPI-Key": "ad2387f26bmsh7243431c9ec4613p19a7b2jsne9494454205f",
+            // RapidAPI key: provide via NEXT_PUBLIC_RAPIDAPI_KEY env (do not hardcode)
+            "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPIDAPI_KEY ?? "",
             "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com",
           },
           signal: controller.signal,
@@ -77,7 +77,7 @@ export default function BookingForm() {
 
   // Top tabs and trip type
   const [serviceType, setServiceType] = useState<"outstation" | "local-airport">("outstation");
-  const [tripType, setTripType] = useState<"round" | "oneway">("round");
+  const [tripType, setTripType] = useState<"round" | "oneway">("oneway");
 
   // Itinerary state: first item is pickup, rest are stops (final is destination)
   const [itinerary, setItinerary] = useState<string[]>([]);

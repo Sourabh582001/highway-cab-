@@ -17,6 +17,8 @@ interface CabCardProps {
   driverChargesIncluded?: boolean;
   nightChargesIncluded?: boolean;
   terms?: string[];
+  // Optional real-time distance override
+  routeDistanceKm?: number;
 }
 
 export default function CabCard({
@@ -34,6 +36,7 @@ export default function CabCard({
   driverChargesIncluded = true,
   nightChargesIncluded = true,
   terms,
+  routeDistanceKm,
 }: CabCardProps) {
   const getIcon = (feature: string) => {
     switch (feature.toLowerCase()) {
@@ -109,7 +112,11 @@ export default function CabCard({
       <div className="border-t border-gray-200 pt-4 mt-2 space-y-2">
         <div className="flex items-center justify-between text-sm">
           <span className="text-gray-600">Included Km</span>
-          <span className="font-semibold text-green-600">{includedKm} Km</span>
+          <span className="font-semibold text-green-600">
+            {typeof routeDistanceKm === 'number'
+              ? `${Math.round(routeDistanceKm)} Km`
+              : `${Math.round(includedKm || 0)} Km`}
+          </span>
         </div>
         <div className="flex items-center justify-between text-sm">
           <span className="text-gray-600">Extra fare/Km</span>

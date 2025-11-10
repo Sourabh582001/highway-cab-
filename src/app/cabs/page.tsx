@@ -7,6 +7,16 @@ import EditRideForm from "@/components/EditRideForm";
 import CabCard from "@/components/CabCard";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
+import { FaMapMarkerAlt, FaFlagCheckered, FaRoute, FaCalendarAlt, FaClock, FaCarSide, FaArrowRight } from "react-icons/fa";
+
+// Themed pill used in itinerary chain (uniform color for all pills)
+function ItineraryPill({ text, variant }: { text: string; variant?: 'start' | 'stop' | 'end' }) {
+  const bgClass = 'bg-golden-yellow';
+  const textClass = 'text-navy-blue';
+  return (
+    <span className={`rounded-full px-4 py-2 ${bgClass} ${textClass} whitespace-nowrap shadow-sm`}>{text || '-'}</span>
+  );
+}
 
 const cabData = [
   {
@@ -84,6 +94,8 @@ export default function CabListingPage() {
   // Multi-stop and trip type from URL
   const stopsParam = searchParams.get('stops') || '';
   const tripParam = (searchParams.get('trip') || 'oneway').toLowerCase();
+  const stopsList = stopsParam ? stopsParam.split('|').filter(Boolean) : [];
+  const tripLabel = tripParam === 'roundtrip' ? 'Round Trip' : 'One Way';
 
   const handleRideUpdate = (updatedData: any) => {
     setRideDetails(updatedData);
@@ -148,6 +160,35 @@ export default function CabListingPage() {
       {/* Main Content */}
       <section className="py-8">
         <div className="max-w-[1200px] mx-auto">
+          {/* Your Itinerary */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-poppins font-semibold text-navy-blue">Your Itinerary</h2>
+              {typeof routeDistance === 'number' && (
+                <div className="flex items-center gap-2">
+                  <FaRoute className="text-golden-yellow w-5 h-5" />
+                  <span className="text-sm text-gray-600">Route Distance</span>
+                  <span className="font-semibold text-green-700">{Math.round(routeDistance)} Km</span>
+                </div>
+              )}
+            </div>
+
+            {/* Themed pill chain */}
+            <div className="overflow-x-auto">
+              <div className="flex items-center gap-3 min-w-full py-1">
+                <ItineraryPill text={rideDetails.pickup} variant="start" />
+                {stopsList.map((s, idx) => (
+                  <>
+                    <FaArrowRight key={`arr-${idx}`} className="text-navy-blue w-4 h-4" />
+                    <ItineraryPill key={`stop-${idx}`} text={s} variant="stop" />
+                  </>
+                ))}
+                <FaArrowRight className="text-navy-blue w-4 h-4" />
+                <ItineraryPill text={rideDetails.destination} variant="end" />
+              </div>
+            </div>
+          </div>
+
           {/* Edit Ride Section */}
           <EditRideForm initialData={rideDetails} onUpdate={handleRideUpdate} />
 

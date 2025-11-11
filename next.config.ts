@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
         source: '/api/distance',
         destination: `${backend}/api/distance`,
       },
+      {
+        source: '/api/cities',
+        destination: `${backend}/api/cities`,
+      },
     ];
   },
 };

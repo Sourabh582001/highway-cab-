@@ -11,6 +11,8 @@ function useCityAutocomplete(query: string) {
   const [error, setError] = useState<string | null>(null);
   const debounceRef = useRef<number | undefined>();
   const abortRef = useRef<AbortController | null>(null);
+  const rapidKey = process.env.NEXT_PUBLIC_RAPIDAPI_KEY;
+  const useRapid = Boolean(rapidKey && rapidKey.length > 0);
 
   useEffect(() => {
     const q = query.trim();
@@ -29,35 +31,49 @@ function useCityAutocomplete(query: string) {
       const controller = new AbortController();
       abortRef.current = controller;
       try {
-        const url = `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?namePrefix=${encodeURIComponent(q)}&sort=-population`;
-        const res = await fetch(url, {
-          headers: {
-            // RapidAPI key: provide via NEXT_PUBLIC_RAPIDAPI_KEY env (do not hardcode)
-            "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPIDAPI_KEY ?? "",
-            "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com",
-          },
-          signal: controller.signal,
-        });
-        if (!res.ok) {
-          if (res.status === 401) {
-            throw new Error("Invalid or missing RapidAPI key");
+        if (useRapid) {
+          const url = `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?namePrefix=${encodeURIComponent(q)}&sort=-population`;
+          const res = await fetch(url, {
+            headers: {
+              // RapidAPI key: provide via NEXT_PUBLIC_RAPIDAPI_KEY env (do not hardcode)
+              "X-RapidAPI-Key": rapidKey ?? "",
+              "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com",
+            },
+            signal: controller.signal,
+          });
+          if (!res.ok) {
+            if (res.status === 401) {
+              throw new Error("Invalid or missing RapidAPI key");
+            }
+            throw new Error(`HTTP ${res.status}`);
           }
-          throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          const items = Array.isArray(data?.data) ? data.data : [];
+          const top5 = items.slice(0, 5).map((c: any) => {
+            const city = c.city ?? "";
+            const region = c.region ?? c.regionCode ?? "";
+            const country = c.country ?? c.countryCode ?? "";
+            return [city, region, country].filter(Boolean).join(", ");
+          });
+          setSuggestions(top5);
+          setError(null);
+        } else {
+          // Fallback: use backend proxy to Nominatim
+          const url = `/api/cities?namePrefix=${encodeURIComponent(q)}`;
+          const res = await fetch(url, { signal: controller.signal });
+          if (!res.ok) {
+            throw new Error(`HTTP ${res.status}`);
+          }
+          const data = await res.json();
+          const items = Array.isArray(data?.data) ? data.data : [];
+          const top5 = items.slice(0, 5);
+          setSuggestions(top5);
+          setError(null);
         }
-        const data = await res.json();
-        const items = Array.isArray(data?.data) ? data.data : [];
-        const top5 = items.slice(0, 5).map((c: any) => {
-          const city = c.city ?? "";
-          const region = c.region ?? c.regionCode ?? "";
-          const country = c.country ?? c.countryCode ?? "";
-          return [city, region, country].filter(Boolean).join(", ");
-        });
-        setSuggestions(top5);
-        setError(null);
       } catch (err: any) {
         if (err?.name === "AbortError") return; // ignore aborted
         setSuggestions([]);
-        setError("Failed to fetch city suggestions");
+        setError(useRapid ? "Failed to fetch city suggestions" : "Failed to fetch city suggestions");
       } finally {
         setLoading(false);
       }
